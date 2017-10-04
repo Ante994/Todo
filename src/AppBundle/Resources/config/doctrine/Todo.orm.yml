@@ -1,0 +1,32 @@
+AppBundle\Entity\Todo:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\TodoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        date:
+            type: datetime
+        deadline:
+            type: datetime
+    oneToMany:
+        tasks:
+            targetEntity: Task
+            mappedBy: todo
+    manyToOne:
+        user:
+            targetEntity: User
+            inversedBy: todos
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    lifecycleCallbacks: {  }
+

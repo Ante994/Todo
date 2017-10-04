@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+      <div class="form-group">
+        <h2 class="page-header">Add Task</h2>
+          {{ form_start(taskForm) }}
+          {{ form_row(taskForm.name, { 'attr': {'class': 'form-control'}}) }}
+          {{ form_row(taskForm.deadline) }}
+          {{ form_row(taskForm.status, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
+          {{ form_row(taskForm.priority, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
+          {{ form_row(taskForm.save, { 'attr': {'class': ' btn btn-primary'} }) }}
+          {{ form_end(taskForm) }}
+      </div>
+{% endblock %}

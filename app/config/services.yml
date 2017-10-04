@@ -1,0 +1,23 @@
+services:
+    app.form.registration:
+        class: AppBundle\Form\Type\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+    app.redirect_after_registration_subscriber:
+        class: AppBundle\EventListener\SetDisplayName
+        autowire: true
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.service.todo_statistic:
+        class: AppBundle\Service\TodoStatistic
+        arguments:
+            - '@app.repository.todo'
+
+#    Repository
+    app.repository.todo:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - 'AppBundle\Entity\Todo'

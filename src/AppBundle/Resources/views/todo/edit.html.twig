@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+  <h2 class="page-header">Edit Todo</h2>
+  <div class="form-group">
+      {{ form_start(todoForm) }}
+      {{ form_row(todoForm.name,  { 'attr': {'class' : 'form-control'}} ) }}
+      {{ form_row(todoForm.date, { 'attr': {'style' : 'margin-bottom:15px'}} )}}
+      {{ form_row(todoForm.save,  { 'attr': {'class' : 'btn btn-primary'}} ) }}
+      {{ form_end(todoForm) }}
+  </div>
+{% endblock %}

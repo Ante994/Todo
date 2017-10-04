@@ -1,0 +1,21 @@
+AppBundle\Entity\Task:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 20
+                minMessage: 'Your task name must be at least {{ limit }} characters long'
+                maxMessage: 'Your task name cannot be longer than {{ limit }} characters'
+        priority:
+        deadline:
+
+AppBundle\Entity\Todo:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 20
+                minMessage: 'Your todo name must be at least {{ limit }} characters long'
+                maxMessage: 'Your todo name cannot be longer than {{ limit }} characters'

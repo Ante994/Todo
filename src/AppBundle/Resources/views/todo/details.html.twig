@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+    <script integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/details.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <a class="btn btn-default" href="{{ path('todo_index') }}">Back Todo List</a>
+    <hr>
+    <h2 class="page-header">{{ todo.name }}</h2>
+    <ul class="list-group">
+        <li class="list-group-item">Category: {{ todo.name }} - {{ statistic['status'] }}</li>
+        <li class="list-group-item">Date: <strong>{{ todo.date|date('F j, Y, g:i a') }}</strong></li>
+        <li class="list-group-item">Status: {{ statistic['status'] }}</li>
+        <li class="list-group-item">Completed: {{ statistic['percentOfFinishedTasks']}} %</li>
+        <li class="list-group-item">Number of tasks: {{ statistic['numberOfTasks'] }}</li>
+        <li class="list-group-item">Finished tasks: {{ statistic['finishedTasks']}}</li>
+        <li class="list-group-item">Remaining tasks: {{ statistic['remainingTasks'] }} </li>
+        <li class="list-group-item">Remaining time:
+            {{ statistic['timeUntilDeadline']['Years'] }} years
+            {{ statistic['timeUntilDeadline']['Months'] }} months
+            {{ statistic['timeUntilDeadline']['Days'] }} days
+            {{ statistic['timeUntilDeadline']['Hours'] }} hours
+            {{ statistic['timeUntilDeadline']['Minute'] }} minutes
+            {{ statistic['timeUntilDeadline']['Seconds'] }} seconds
+        </li>
+    </ul>
+    <h2>Tasks</h2>
+      {% for task in tasks %}
+          <div id="{{ task.id }}">
+              <tr>
+                  <td><a href="{{ path('task_show',{'taskId':task.id, 'todoId':todo.id } )}}"
+                         class="btn btn-success">{{ task.name }}</a></td>
+                  <button class="btn btn-danger" id="delete-link" data-value="{{ task.id }}" data-value2="{{ todo.id }}">Delete</button
+              </tr>
+          </div>
+      {% endfor %}
+    <h4><a id="selector" href="{{ path('task_new', {'todoId':todo.id} )}}" class="btn btn-info">Add new task</a></h4>
+ {% endblock %}

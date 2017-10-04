@@ -1,0 +1,46 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+todo_index:
+  path: /profiler
+  defaults: { _controller: AppBundle:Todo:index }
+
+todo_new:
+  path: /profiler/todos/new
+  defaults: { _controller: AppBundle:Todo:new }
+
+todo_delete:
+  path: /profiler/todos/{todoId}/delete
+  defaults: { _controller: AppBundle:Todo:delete }
+
+todo_show:
+  path: /profiler/todos/{todoId}
+  defaults: { _controller: AppBundle:Todo:show }
+
+todo_edit:
+  path: /profiler/todos/{todoId}/edit
+  defaults: { _controller: AppBundle:Todo:edit }
+
+task_delete:
+  path: /profiler/{todoId}/{taskId}/delete
+  defaults: { _controller: AppBundle:Task:delete }
+
+task_show:
+  path: /profiler/{todoId}/{taskId}/show
+  defaults: { _controller: AppBundle:Task:show }
+
+task_edit:
+  path: /profiler/{todoId}/{taskId}/edit
+  defaults: { _controller: AppBundle:Task:edit }
+
+task_new:
+  path: /profiler/{todoId}/tasks/new
+  defaults: { _controller: AppBundle:Task:new }
+
+index_page:
+  path: /
+  defaults: { _controller: AppBundle:Todo:homepage }
