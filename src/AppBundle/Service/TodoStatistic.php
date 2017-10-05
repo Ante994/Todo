@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Repository\TodoRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class TodoStatistic
 {
@@ -22,7 +23,12 @@ class TodoStatistic
         $this->todoRepository = $todoRepository;
     }
 
-
+    /**
+     * @param User $user
+     * @param $todoId
+     * @return array
+     * @Route()
+     */
     public function getStatistic(User $user, $todoId)
     {
         $todo = $this->todoRepository->findByUserAndTodo($user, $todoId);
