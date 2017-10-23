@@ -12,8 +12,8 @@ $container->setParameter('database_password', $db['pass']);
 // Using Mandrill to send email
 $container->setParameter('mailer_transport', 'smtp');
 $container->setParameter('mailer_host', 'smtp.mandrillapp.com');
-$container->setParameter('mailer_user', $_ENV['MANDRILL_USERNAME']);
-$container->setParameter('mailer_password', $_ENV['MANDRILL_APIKEY']);
+$container->setParameter('mailer_user', 'ante@dom.hr');
+$container->setParameter('mailer_password', '');
 
 // Other settings
 $container->setParameter('locale', 'en');
