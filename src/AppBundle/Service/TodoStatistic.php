@@ -47,7 +47,7 @@ class TodoStatistic
     private function getPercentOfFinishedTasks($tasks)
     {
         $percent = $this->getFinishedTasks($tasks) ?
-            round($this->getFinishedTasks($tasks) / $this->getNumberOfTasks($tasks),2) : 0;
+            round(($this->getFinishedTasks($tasks) / $this->getNumberOfTasks($tasks)) * 100,2) : 0;
 
         return $percent;
     }

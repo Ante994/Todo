@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Task;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\TaskType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,10 +72,19 @@ class TaskController extends Controller
         if (!$this->getUser() instanceof User || !$task) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
+        $datetime1 =  $task->getDeadline();
+        $datetime2 = new DateTime('now');
+        $diff = $datetime2->diff($datetime1);
+        if ($datetime1 > $datetime2) {
+            $message = sprintf('There is left %u days for finishing task', $diff->days);
+        } else {
+            $message = sprintf('Task deadline ended %u days ago', $diff->days);
+        }
 
         return $this->render('AppBundle:task:details.html.twig', [
                 'task' => $task,
                 'todoId' => $task->getTodo()->getId(),
+                'message' => $message,
             ]
         );
     }

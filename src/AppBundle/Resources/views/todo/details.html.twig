@@ -6,8 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <a class="btn btn-default" href="{{ path('todo_index') }}">Back Todo List</a>
-    <hr>
+    <a class="btn btn-default " href="{{ path('todo_index') }}">Back Todo List</a>
     <h2 class="page-header">{{ todo.name }}</h2>
     <ul class="list-group">
         <li class="list-group-item">Category: {{ todo.name }} - {{ statistic['status'] }}</li>
@@ -26,15 +25,34 @@
             {{ statistic['timeUntilDeadline']['Seconds'] }} seconds
         </li>
     </ul>
-    <h2>Tasks</h2>
-      {% for task in tasks %}
-          <div id="{{ task.id }}">
-              <tr>
-                  <td><a href="{{ path('task_show',{'taskId':task.id, 'todoId':todo.id } )}}"
-                         class="btn btn-success">{{ task.name }}</a></td>
-                  <button class="btn btn-danger" id="delete-link" data-value="{{ task.id }}" data-value2="{{ todo.id }}">Delete</button
-              </tr>
-          </div>
-      {% endfor %}
-    <h4><a id="selector" href="{{ path('task_new', {'todoId':todo.id} )}}" class="btn btn-info">Add new task</a></h4>
- {% endblock %}
+    <h2 class="page-header">Tasks</h2>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(pagination, 'Name', 'task.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Status', 'task.status') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Priority', 'task.priority') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Deadline', 'task.deadline') }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for task in pagination %}
+        <div id="{{ task.id }}">
+            <tr>
+                <td>{{ task.name }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.deadline|date('F j, Y, g:i a')}}</td>
+                <td><a href="{{ path('task_show',{'taskId':task.id, 'todoId':todo.id } )}}"  class="btn btn-success">View</a></td>
+                <td><a href="{{ path('todo_edit',{'todoId':todo.id} )}}" class="btn btn-default">Edit</a></td>
+                <td><button class="btn btn-danger" id="delete-link" data-value="{{ task.id }}" data-value2="{{ todo.id }}">Delete</button></td>
+            </tr>
+        </div>
+        {% endfor %}
+        <h4><a id="selector" href="{{ path('task_new', {'todoId':todo.id} )}}" class="btn btn-info">Add new task</a></h4>
+        </tbody>
+    </table>
+{% endblock %}

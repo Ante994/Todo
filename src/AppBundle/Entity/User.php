@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 
@@ -15,12 +16,15 @@ class User extends BaseUser
 
     private $displayName;
 
+    private $registrationDate;
+
     private $todos;
 
     public function __construct()
     {
         parent::__construct();
         $this->todos = new ArrayCollection();
+        $this->registrationDate = new DateTime();
     }
 
     /**
@@ -85,6 +89,20 @@ class User extends BaseUser
     public function setTodos($todos)
     {
         $this->todos = $todos;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRegistrationDate(): \DateTime
+    {
+        return $this->registrationDate;
+    }
+
+
+    public function setRegistrationDate()
+    {
+        $this->registrationDate = new \DateTime('now');
     }
 
 }

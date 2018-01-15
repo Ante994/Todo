@@ -15,6 +15,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+    public function findByTodo(Todo $todo)
+    {
+        return $this->createQueryBuilder('task')
+            ->andWhere('task.todo = :todo')
+            ->setParameter('todo', $todo)
+            ->getQuery();
+    }
+
     public function findByUserAndTodo(User $user, $todoID)
     {
         return $this->createQueryBuilder('todo')

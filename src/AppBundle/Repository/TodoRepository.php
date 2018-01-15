@@ -12,6 +12,15 @@ use AppBundle\Entity\User;
  */
 class TodoRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findAllTodoByUser(User $user)
+    {
+        return $this->createQueryBuilder('todo')
+            ->andWhere('todo.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+    }
+
     public function findAllUserTodo(User $user)
     {
         return $this->createQueryBuilder('todo')

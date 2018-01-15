@@ -17,10 +17,21 @@ class TodoController extends Controller
 
     public function indexAction()
     {
-        $userTodo = $this->getUser();
+        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findAllTodoByUser($this->getUser());
+
+        /**
+         * @var $paginator /Knp/Component/Pager/Paginator
+         */
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $usersTodo,
+            1,
+            10
+        );
+
 
         return $this->render('AppBundle:todo:index.html.twig', [
-                'todos' => $userTodo->getTodos(),
+                'pagination' => $pagination,
             ]
         );
     }
@@ -71,15 +82,29 @@ class TodoController extends Controller
     public function showAction($todoId)
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
+
         if (!$this->getUser() instanceof User || !$usersTodo) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
         $todoService = $this->get('app.service.todo_statistic');
         $statistic = $todoService->getStatistic($this->getUser(), $todoId);
 
+        $todoTasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findByTodo($usersTodo);
+
+        /**
+         * @var $paginator /Knp/Component/Pager/Paginator
+         */
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $todoTasks,
+            1,
+            10
+        );
+
         return $this->render('AppBundle:todo:details.html.twig', [
                 'todo' => $usersTodo,
-                'tasks' => $usersTodo->getTasks(),
+//                'tasks' => $usersTodo->getTasks(),
+                'pagination' => $pagination,
                 'statistic' => $statistic,
             ]
         );

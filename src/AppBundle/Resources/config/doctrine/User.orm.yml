@@ -19,6 +19,8 @@ AppBundle\Entity\User:
             column: display_name
             type: string
             length: 40
+        registrationDate:
+            type: datetime
     oneToMany:
         todos:
             targetEntity: Todo
