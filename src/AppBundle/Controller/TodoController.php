@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Type\TodoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodoController extends Controller
 {
@@ -29,9 +30,12 @@ class TodoController extends Controller
             10
         );
 
+        $todo = new Todo();
+        $form = $this->createForm(TodoType::class, $todo);
 
         return $this->render('AppBundle:todo:index.html.twig', [
                 'pagination' => $pagination,
+                'form' => $form->createView(),
             ]
         );
     }
@@ -53,11 +57,28 @@ class TodoController extends Controller
                 'notice', 'Todo Added'
             );
 
-            return $this->redirectToRoute('todo_index');
+            if ($request->isXmlHttpRequest()) {
+                $html = '
+                <tr>
+                  <th>'.$todo->getId().'</th>
+                  <td>'.$todo->getName().'</td>
+                  <td>'.$todo->getDate()->format("F j, Y, g:i a").'</td>
+                  <td>'.$todo->getDeadline()->format("F j, Y, g:i a").'</td>
+                  <td><a href="profiler/todos/'.$todo->getId().'" class="btn btn-success">View</a></td>
+                  <td><a href="profiler/todos/'.$todo->getId().'/edit" class="btn btn-default">Edit</a></td>
+                  <td><a href="profiler/todos/'.$todo->getId().'/delete" class="btn btn-warning">Delete</a></td>
+                </tr>
+                ';
+                $response = new Response(json_encode($html));
+
+                return $response;
+            } else {
+                return $this->redirectToRoute('todo_index');
+            }
         }
 
-        return $this->render('AppBundle:todo:create.html.twig', [
-                'todoForm'=> $form->createView(),
+        return $this->render('AppBundle:todo:edit.html.twig', [
+                'todo'=> $form->createView(),
             ]
         );
     }
@@ -103,7 +124,6 @@ class TodoController extends Controller
 
         return $this->render('AppBundle:todo:details.html.twig', [
                 'todo' => $usersTodo,
-//                'tasks' => $usersTodo->getTasks(),
                 'pagination' => $pagination,
                 'statistic' => $statistic,
             ]
@@ -130,8 +150,8 @@ class TodoController extends Controller
             return $this->redirectToRoute('todo_index');
         }
 
-        return $this->render('AppBundle:todo:create.html.twig',[
-                'todoForm'=> $form->createView(),
+        return $this->render('AppBundle:todo:edit.html.twig',[
+                'form'=> $form->createView(),
             ]
         );
     }

@@ -1,11 +1,21 @@
 {% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+    {{ form_javascript(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ form_stylesheet(form) }}
+{% endblock %}
+
 {% block body %}
+
   <h2 class="page-header">Edit Todo</h2>
-  <div class="form-group">
-      {{ form_start(todoForm) }}
-      {{ form_row(todoForm.name,  { 'attr': {'class' : 'form-control'}} ) }}
-      {{ form_row(todoForm.date, { 'attr': {'style' : 'margin-bottom:15px'}} )}}
-      {{ form_row(todoForm.save,  { 'attr': {'class' : 'btn btn-primary'}} ) }}
-      {{ form_end(todoForm) }}
+  <div class="form-group col-xs-4">
+      {{ form_start(form, {'attr': {'id': 'form_todo_new'}}) }}
+      {{ form_row(form.name,  { 'attr': {'class' : 'form-control'}} ) }}
+      {{ form_row(form.deadline, { 'attr': {'class' : 'form-control'}} )}}
+      {{ form_row(form.save,  { 'attr': {'class' : 'btn btn-primary','style' : 'margin-top:15px'}} ) }}
+      {{ form_end(form)}}
   </div>
 {% endblock %}

@@ -36,7 +36,7 @@ class TaskController extends Controller
         }
 
         return $this->render('AppBundle:task:create.html.twig', [
-                'taskForm'=> $form->createView(),
+                'form'=> $form->createView(),
             ]
         );
     }
@@ -106,6 +106,11 @@ class TaskController extends Controller
             $this->addFlash(
                 'notice', 'Task Added'
             );
+
+            if ($request->isXmlHttpRequest()) {
+                return new Response(json_encode(['success'=>true,'message'=>'Successfully edited']));
+            }
+
             $todoService = $this->get('app.service.todo_statistic');
             $statistic = $todoService->getStatistic($this->getUser(), $todoId);
 
@@ -118,7 +123,8 @@ class TaskController extends Controller
         }
 
         return $this->render('AppBundle:task:edit.html.twig', [
-                'taskForm'=> $form->createView(),
+                'form'=> $form->createView(),
+                'taskId' => $task->getId(),
             ]
         );
     }

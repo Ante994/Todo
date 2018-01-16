@@ -6,15 +6,9 @@
   <h2 class="page-header">{{ task.name }}</h2>
   <ul class="list-group">
     <li class="list-group-item">Priority: {{ task.priority }}</li>
-    <li class="list-group-item">Deadline: <strong>{{ task.deadline|date('d.m.Y') }}</strong> ({{ message }})</li>
+    <li class="list-group-item">Deadline: <strong>{{ task.deadline|date('d.m.Y') }}</strong> ({{ message }} )</li>
     <li class="list-group-item">Status: <strong>{{ task.status }}</strong></li>
   </ul>
-  <tr>
-    <td><a href="{{ path('task_edit',{'taskId':task.id, 'todoId': todoId} )}}"
-           class="btn btn-default">Edit</a></td>
-    <td><a href="{{ path('task_delete',{'taskId':task.id, 'todoId': todoId} )}}"
-           id="delete-button" class="btn btn-warning">Delete</a></td>
-  </tr>
   <h4><a href="{{ path('task_new', {'todoId':task.todo.id,'todoId': todoId} )}}"
          class="btn btn-info">Add new task</a></h4>
 {% endblock %}

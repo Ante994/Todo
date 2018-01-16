@@ -3,13 +3,12 @@ var MAIN = {
         var elem = $(this);
         var todoId = elem.data("value2");
         var taskId = elem.data("value");
-        var parentElem = elem.closest("");
+        // var parentElem = elem.closest("");
         $.ajax({
             type: "POST",
             url: "../"+todoId+"/"+taskId+"/delete",
             success : function(response){
                var response = jQuery.parseJSON(response);
-               console.log(response);
                 if(response.success){
                    $("#"+taskId).remove();
                 }
@@ -21,3 +20,5 @@ var MAIN = {
     }
 }
 $(document).ready(MAIN.start);
+
+

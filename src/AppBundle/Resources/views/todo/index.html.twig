@@ -1,7 +1,17 @@
 {% extends 'layout.html.twig' %}
 
+{% block javascripts %}
+  <script integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
+    {{ form_javascript(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ form_stylesheet(form) }}
+{% endblock %}
+
 {% block body %}
-    <h2 class="page-header">Todos list</h2>
+    <h2 class="text-center">Todo</h2>
 
     <table class="table table-striped">
       <thead>
@@ -13,8 +23,7 @@
         <th></th>
       </tr>
       </thead>
-      <tbody>
-
+      <tbody id="todos">
       {% for todo in pagination %}
         <tr>
           <th>{{ todo.id }}</th>
@@ -26,7 +35,19 @@
           <td><a href="{{ path('todo_delete',{'todoId':todo.id} )}}" class="btn btn-warning">Delete</a></td>
         </tr>
       {% endfor %}
-      <h4><a href="{{ path('todo_new') }}" class="btn btn-info">Add new todo</a></h4>
       </tbody>
     </table>
+    <h4><button id="todoFormButton" onclick="showForm();" class="btn btn-info">Add new todo</button></h4>
+    {% block todoForm %}
+        <div id="todoForm" style="visibility: hidden">
+            <hr>
+            <div class="form-group col-xs-4">
+                {{ form_start(form, {'attr': {'id': 'form_todo_new'}}) }}
+                {{ form_row(form.name,  { 'attr': {'class' : 'form-control'}} ) }}
+                {{ form_row(form.deadline, { 'attr': {'class' : 'form-control'}} )}}
+                {{ form_row(form.save,  { 'attr': {'class' : 'btn btn-primary','style' : 'margin-top:15px'}} ) }}
+                {{ form_end(form)}}
+            </div>
+        </div>
+    {% endblock %}
 {% endblock %}

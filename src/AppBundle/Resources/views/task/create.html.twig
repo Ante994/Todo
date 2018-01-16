@@ -1,13 +1,24 @@
 {% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+    <script integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    {{ form_javascript(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ form_stylesheet(form) }}
+{% endblock %}
+
 {% block body %}
-      <div class="form-group">
         <h2 class="page-header">Add Task</h2>
-          {{ form_start(taskForm) }}
-          {{ form_row(taskForm.name, { 'attr': {'class': 'form-control'}}) }}
-          {{ form_row(taskForm.deadline) }}
-          {{ form_row(taskForm.status, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
-          {{ form_row(taskForm.priority, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
-          {{ form_row(taskForm.save, { 'attr': {'class': ' btn btn-primary'} }) }}
-          {{ form_end(taskForm) }}
-      </div>
+        <div class="form-group col-xs-4">
+          {{ form_start(form) }}
+          {{ form_row(form.name, { 'attr': {'class': 'form-control'}}) }}
+          {{ form_row(form.deadline, { 'attr': {'class' : 'form-control'}} )}}
+          {{ form_row(form.status, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
+          {{ form_row(form.priority, { 'attr': {'class': 'form-control', 'style' : 'margin-bottom:15px'}}) }}
+          <button class="btn btn-primary">Save</button>
+          {{ form_end(form) }}
+        </div>
 {% endblock %}
