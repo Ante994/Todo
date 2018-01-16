@@ -10,9 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class TaskController
+ * @package AppBundle\Controller
+ */
 class TaskController extends Controller
 {
-
+    /**
+     * @param Request $request
+     * @param $todoId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function newAction(Request $request, $todoId)
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
@@ -41,6 +49,12 @@ class TaskController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @param $taskId
+     * @param $todoId
+     * @return Response
+     */
     public function deleteAction(Request $request, $taskId, $todoId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -66,6 +80,10 @@ class TaskController extends Controller
         );
     }
 
+    /**
+     * @param $taskId
+     * @return Response
+     */
     public function showAction($taskId)
     {
         $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);
@@ -89,6 +107,12 @@ class TaskController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @param $taskId
+     * @param $todoId
+     * @return Response
+     */
     public function editAction(Request $request, $taskId, $todoId)
     {
         $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);

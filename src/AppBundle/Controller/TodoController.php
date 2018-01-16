@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class TodoController
+ * @package AppBundle\Controller
+ */
 class TodoController extends Controller
 {
     public function homepageAction()
@@ -16,6 +20,9 @@ class TodoController extends Controller
         return $this->render('AppBundle:todo:homepage.html.twig');
     }
 
+    /**
+     * @return Response
+     */
     public function indexAction()
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findAllTodoByUser($this->getUser());
@@ -40,6 +47,10 @@ class TodoController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function newAction(Request $request)
     {
         $todo = new Todo();
@@ -83,6 +94,10 @@ class TodoController extends Controller
         );
     }
 
+    /**
+     * @param $todoId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction($todoId)
     {
         $user = $this->getUser();
@@ -100,6 +115,10 @@ class TodoController extends Controller
         return $this->redirectToRoute('todo_index');
     }
 
+    /**
+     * @param $todoId
+     * @return Response
+     */
     public function showAction($todoId)
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
@@ -130,6 +149,11 @@ class TodoController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @param $todoId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function editAction(Request $request, $todoId)
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
