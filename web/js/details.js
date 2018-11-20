@@ -15,10 +15,12 @@ var MAIN = {
             }
         });
     },
+	
     start : function () {
         $(document).on('click','#delete-link',MAIN.delete);
     }
 }
+
 $(document).ready(MAIN.start);
 
 

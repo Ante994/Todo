@@ -15,12 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TodoController extends Controller
 {
+    /**
+     * Homepage
+     * @return Response
+     */
     public function homepageAction()
     {
         return $this->render('AppBundle:todo:homepage.html.twig');
     }
 
     /**
+     * Show all todos of user
      * @return Response
      */
     public function indexAction()

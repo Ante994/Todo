@@ -117,3 +117,11 @@ knp_paginator:
 # DatePicker
 sc_datetimepicker:
     picker: ~
+
+
+doctrine_migrations:
+  dir_name: "%kernel.root_dir%/DoctrineMigrations"
+  namespace: Application\Migrations
+  table_name: migration_versions
+  name: Application Migrations
+  organize_migrations: false
