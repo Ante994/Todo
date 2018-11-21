@@ -15,6 +15,10 @@ services:
         arguments:
             - '@app.repository.todo'
 
+    app.service.todo_index_json:
+        class: AppBundle\Service\NewTodoAjax
+
+
 #    Repository
     app.repository.todo:
         class: Doctrine\ORM\EntityRepository

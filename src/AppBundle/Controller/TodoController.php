@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\TodoType;
+use AppBundle\Service\NewTodoAjax;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,7 @@ class TodoController extends Controller
         $todo = new Todo();
         $form = $this->createForm(TodoType::class, $todo);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid())  {
             $todo = $form->getData();
             $todo->setDate(new \DateTime('now'));
@@ -78,29 +80,14 @@ class TodoController extends Controller
             );
 
             if ($request->isXmlHttpRequest()) {
-                $html = '
-                <tr>
-                  <th>'.$todo->getId().'</th>
-                  <td>'.$todo->getName().'</td>
-                  <td>'.$todo->getDate()->format("F j, Y, g:i a").'</td>
-                  <td>'.$todo->getDeadline()->format("F j, Y, g:i a").'</td>
-                  <td><a href="profiler/todos/'.$todo->getId().'" class="btn btn-success">View</a></td>
-                  <td><a href="profiler/todos/'.$todo->getId().'/edit" class="btn btn-default">Edit</a></td>
-                  <td><a href="profiler/todos/'.$todo->getId().'/delete" class="btn btn-warning">Delete</a></td>
-                </tr>
-                ';
-                $response = new Response(json_encode($html));
-
+                $todoJsonService = $this->get('app.service.todo_index_json');
+                $response = $todoJsonService->getJsonTodo($todo);
                 return $response;
-            } else {
-                return $this->redirectToRoute('todo_index');
             }
         }
 
-        return $this->render('AppBundle:todo:edit.html.twig', [
-                'todo'=> $form->createView(),
-            ]
-        );
+        return $this->render('AppBundle:todo:homepage.html.twig');
+
     }
 
     /**
