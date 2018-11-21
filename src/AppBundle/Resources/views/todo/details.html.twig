@@ -46,13 +46,13 @@
                 <td>{{ task.status }}</td>
                 <td>{{ task.priority }}</td>
                 <td>{{ task.deadline|date('F j, Y, g:i a')}}</td>
-                <td><a href="{{ path('task_show',{'taskId':task.id, 'todoId':todo.id } )}}"  class="btn btn-success">View</a></td>
-                <td><a href="{{ path('task_edit',{'taskId':task.id, 'todoId':todo.id } )}}" class="btn btn-default">Edit</a></td>
+                <td><a href="{{ path('task_show',{'task':task.id, 'todo':todo.id } )}}"  class="btn btn-success">View</a></td>
+                <td><a href="{{ path('task_edit',{'task':task.id, 'todo':todo.id } )}}" class="btn btn-default">Edit</a></td>
                 <td><button class="btn btn-danger" id="delete-link" data-value="{{ task.id }}" data-value2="{{ todo.id }}">Delete</button></td>
             </tr>
         </div>
         {% endfor %}
-        <h4><a id="selector" href="{{ path('task_new', {'todoId':todo.id} )}}" class="btn btn-info">Add new task</a></h4>
+        <h4><a id="selector" href="{{ path('task_new', {'todo':todo.id} )}}" class="btn btn-info">Add new task</a></h4>
         </tbody>
     </table>
 {% endblock %}

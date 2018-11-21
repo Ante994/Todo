@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
+use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\TaskType;
 use DateTime;
@@ -16,15 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TaskController extends Controller
 {
+
     /**
      * New task
      * @param Request $request
-     * @param $todoId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @param Todo $todo
+     * @return Response
      */
-    public function newAction(Request $request, $todoId):Response
+    public function newAction(Request $request, Todo $todo):Response
     {
-        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
+        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todo);
         if (!$this->getUser() instanceof User || !$usersTodo) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -53,15 +55,15 @@ class TaskController extends Controller
     /**
      * Delete task
      * @param Request $request
-     * @param $taskId
-     * @param $todoId
+     * @param Task $task
+     * @param Todo $todo
      * @return Response
      */
-    public function deleteAction(Request $request, $taskId, $todoId):Response
+    public function deleteAction(Request $request, Task $task, Todo $todo):Response
     {
         $em = $this->getDoctrine()->getManager();
-        $task = $em->getRepository('AppBundle:Task')->find($taskId);
-        $todo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
+        $task = $em->getRepository('AppBundle:Task')->find($task);
+        $todo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todo);
         if (!$this->getUser() instanceof User || !$task) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -82,14 +84,15 @@ class TaskController extends Controller
         );
     }
 
+
     /**
      * Show task details
-     * @param $taskId
+     * @param Task $task
      * @return Response
      */
-    public function showAction($taskId):Response
+    public function showAction(Task $task):Response
     {
-        $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);
+        $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($task);
         if (!$this->getUser() instanceof User || !$task) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -113,13 +116,13 @@ class TaskController extends Controller
     /**
      * Edit action for task
      * @param Request $request
-     * @param $taskId
-     * @param $todoId
+     * @param Task $task
+     * @param Todo $todo
      * @return Response
      */
-    public function editAction(Request $request, $taskId, $todoId):Response
+    public function editAction(Request $request, Task $task, Todo $todo):Response
     {
-        $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);
+        $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($task);
         if (!$this->getUser() instanceof User || !$task) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -140,7 +143,7 @@ class TaskController extends Controller
             }
 
             $todoService = $this->get('app.service.todo_statistic');
-            $statistic = $todoService->getStatistic($this->getUser(), $todoId);
+            $statistic = $todoService->getStatistic($this->getUser(), $todo);
 
             return $this->render('AppBundle:todo:details.html.twig', [
                     'todo' => $task->getTodo(),

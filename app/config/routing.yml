@@ -14,31 +14,31 @@ todo_new:
   defaults: { _controller: AppBundle:Todo:new }
 
 todo_delete:
-  path: /profiler/todos/{todoId}/delete
+  path: /profiler/todos/{todo}/delete
   defaults: { _controller: AppBundle:Todo:delete }
 
 todo_show:
-  path: /profiler/todos/{todoId}
+  path: /profiler/todos/{todo}
   defaults: { _controller: AppBundle:Todo:show }
 
 todo_edit:
-  path: /profiler/todos/{todoId}/edit
+  path: /profiler/todos/{todo}/edit
   defaults: { _controller: AppBundle:Todo:edit }
 
 task_delete:
-  path: /profiler/{todoId}/{taskId}/delete
+  path: /profiler/{todo}/{task}/delete
   defaults: { _controller: AppBundle:Task:delete }
 
 task_show:
-  path: /profiler/{todoId}/{taskId}/show
+  path: /profiler/{todo}/{task}/show
   defaults: { _controller: AppBundle:Task:show }
 
 task_edit:
-  path: /profiler/{todoId}/{taskId}/edit
+  path: /profiler/{todo}/{task}/edit
   defaults: { _controller: AppBundle:Task:edit }
 
 task_new:
-  path: /profiler/{todoId}/tasks/new
+  path: /profiler/{todo}/tasks/new
   defaults: { _controller: AppBundle:Task:new }
 
 index_page:

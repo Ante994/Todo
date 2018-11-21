@@ -9,6 +9,6 @@
     <li class="list-group-item">Deadline: <strong>{{ task.deadline|date('d.m.Y') }}</strong> ({{ message }} )</li>
     <li class="list-group-item">Status: <strong>{{ task.status }}</strong></li>
   </ul>
-  <h4><a href="{{ path('task_new', {'todoId':task.todo.id,'todoId': todoId} )}}"
+  <h4><a href="{{ path('task_new', {'todo':task.todo.id })}}"
          class="btn btn-info">Add new task</a></h4>
 {% endblock %}

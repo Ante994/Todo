@@ -54,8 +54,6 @@ class TodoController extends Controller
         );
     }
 
-    # razdvojiti u servise, max 20 linija po akciji, param coverter, tested code
-
     /**
      * Creates new todo
      * @param Request $request
@@ -90,15 +88,16 @@ class TodoController extends Controller
 
     }
 
+
     /**
      * Delete todo
-     * @param $todoId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Todo $todo
+     * @return RedirectResponse
      */
-    public function deleteAction($todoId):RedirectResponse
+    public function deleteAction(Todo $todo):RedirectResponse
     {
         $user = $this->getUser();
-        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($user, $todoId);
+        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($user, $todo);
         if (!$user instanceof User || !$usersTodo) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -112,20 +111,21 @@ class TodoController extends Controller
         return $this->redirectToRoute('todo_index');
     }
 
+
     /**
      * Show details of todo
-     * @param $todoId
+     * @param Todo $todo
      * @return Response
      */
-    public function showAction($todoId):Response
+    public function showAction(Todo $todo):Response
     {
-        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
+        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todo);
 
         if (!$this->getUser() instanceof User || !$usersTodo) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
         $todoService = $this->get('app.service.todo_statistic');
-        $statistic = $todoService->getStatistic($this->getUser(), $todoId);
+        $statistic = $todoService->getStatistic($this->getUser(), $todo);
         $todoTasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findByTodo($usersTodo);
 
         /**
@@ -146,15 +146,16 @@ class TodoController extends Controller
         );
     }
 
+
     /**
      * Edit todo
      * @param Request $request
-     * @param $todoId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @param Todo $todo
+     * @return Response
      */
-    public function editAction(Request $request, $todoId):Response
+    public function editAction(Request $request, Todo $todo):Response
     {
-        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
+        $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todo);
         if (!$this->getUser() instanceof User || !$usersTodo) {
             throw $this->createNotFoundException("This does not exist or you not allowed be here!");
         }
@@ -177,5 +178,4 @@ class TodoController extends Controller
             ]
         );
     }
-
 }
