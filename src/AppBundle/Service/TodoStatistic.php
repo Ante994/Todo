@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Repository\TodoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,36 +25,50 @@ class TodoStatistic
     }
 
     /**
+     * Return full statistic of todo-list
      * @param User $user
      * @param $todoId
      * @return array
      * @Route()
      */
-    public function getStatistic(User $user, $todoId)
+    public function getStatistic(User $user, $todoId):array
     {
         $todo = $this->todoRepository->findByUserAndTodo($user, $todoId);
         $statistic = [
-            'percentOfFinishedTasks' => $this->getPercentOfFinishedTasks($todo->getTasks()),
-            'remainingTasks' => $this->getNumberOfTasks($todo->getTasks()) - $this->getFinishedTasks($todo->getTasks()),
-            'finishedTasks' => $this->getFinishedTasks($todo->getTasks()),
-            'status' => $this->getTodoStatus($todo->getTasks()),
-            'numberOfTasks' => $this->getNumberOfTasks($todo->getTasks()),
-            'timeUntilDeadline' => $this->getTimeUntilDeadline($todo->getDeadline()),
+            'percentOfFinishedTasks' => $this->getPercentOfFinishedTasks($todo),
+            'remainingTasks' => $this->getNumberOfRemainingTasks($todo),
+            'finishedTasks' => $this->getFinishedTasks($todo),
+            'status' => $this->getTodoStatus($todo),
+            'numberOfTasks' => $this->getNumberOfTasks($todo),
+            'timeUntilDeadline' => $this->getTimeUntilDeadline($todo),
         ];
 
         return $statistic;
     }
 
-    private function getPercentOfFinishedTasks($tasks)
+
+    /**
+     * Return percentage of finished tasks on todo-list
+     * @param Todo $todo
+     * @return float|int
+     */
+    private function getPercentOfFinishedTasks(Todo $todo):float
     {
-        $percent = $this->getFinishedTasks($tasks) ?
-            round(($this->getFinishedTasks($tasks) / $this->getNumberOfTasks($tasks)) * 100,2) : 0;
+        $percent = $this->getFinishedTasks($todo) ?
+            round(($this->getFinishedTasks($todo) / $this->getNumberOfTasks($todo)) * 100,2) : 0;
 
         return $percent;
     }
 
-    private function getTimeUntilDeadline(\DateTime $datetime)
+
+    /**
+     * Returns difference between current and deadline date
+     * @param Todo $todo
+     * @return array
+     */
+    private function getTimeUntilDeadline(Todo $todo):array
     {
+        $datetime = $todo->getDeadline();
         $dateNow = new \DateTime('now');
         $interval = $dateNow->diff($datetime);
         $diff = [
@@ -68,39 +83,66 @@ class TodoStatistic
         return $diff;
     }
 
-    private function getTodoStatus($tasks)
+    /**
+     * Return string status of todo-list
+     * @param Todo $todo
+     * @return string
+     */
+    private function getTodoStatus(Todo $todo):string
     {
-        if ($this->getRemainingTasks($tasks)) {
+        if ($this->getNumberOfRemainingTasks($todo)) {
             return 'Not Finished';
-        } else {
-            return 'Finished';
         }
+
+        return 'Finished';
     }
 
-    private function getNumberOfTasks($tasks)
+
+    /**
+     * Return number of tasks
+     * @param Todo $todo
+     * @return int
+     */
+    private function getNumberOfTasks(Todo $todo):int
     {
         $counter = 0;
-        foreach ($tasks as $task) {
+
+        foreach ($todo->getTasks() as $task) {
             $counter++;
         }
+
         return $counter;
     }
 
-    private function getFinishedTasks($tasks)
+    /**
+     * Return number of finished tasks
+     * @param Todo $todo
+     * @return int
+     */
+    private function getFinishedTasks(Todo $todo):int
     {
+        $tasks= $todo->getTasks();
         $counter = 0;
         foreach ($tasks as $task) {
             if ($task->getStatus() == 'Done') {
                 $counter++;
             }
         }
+
         return $counter;
     }
 
-    private function getRemainingTasks($tasks)
+
+    /**
+     * Return number of finished tasks
+     * @param Todo $todo
+     * @return int
+     */
+    private function getNumberOfRemainingTasks(Todo $todo): int
     {
-        return ($this->getNumberOfTasks($tasks) - $this->getFinishedTasks($tasks));
+        return ($this->getNumberOfTasks($todo) - $this->getFinishedTasks($todo));
     }
+
 
 }
 

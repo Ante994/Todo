@@ -6,6 +6,7 @@ use AppBundle\Entity\Task;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * TaskRepository
@@ -15,6 +16,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+    /**
+     * @param Todo $todo
+     * @return \Doctrine\ORM\Query
+     */
     public function findByTodo(Todo $todo)
     {
         return $this->createQueryBuilder('task')
@@ -23,16 +28,32 @@ class TaskRepository extends EntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param User $user
+     * @param $todoID
+     * @return mixed
+     */
     public function findByUserAndTodo(User $user, $todoID)
     {
-        return $this->createQueryBuilder('todo')
-            ->andWhere('todo.user = :user', 'todo.id = :id')
-            ->setParameter('user', $user)
-            ->setParameter('id', $todoID)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('todo')
+                ->andWhere('todo.user = :user', 'todo.id = :id')
+                ->setParameter('user', $user)
+                ->setParameter('id', $todoID)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
 
+    /**
+     * @param $todoId
+     * @param User $user
+     * @param $task
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findOneByUserAndTodo($todoId, User $user, $task)
     {
         return $this->createQueryBuilder('task')

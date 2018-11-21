@@ -16,7 +16,6 @@ class SetDisplayName implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        // The solution is to add a lower priority to call your listener after EmailConfirmationEvent
         return [
             FOSUserEvents::REGISTRATION_SUCCESS => [
                 ['onRegistrationSuccess', -10],

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * TodoRepository
@@ -13,6 +14,10 @@ use AppBundle\Entity\User;
 class TodoRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    /**
+     * @param User $user
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllTodoByUser(User $user)
     {
         return $this->createQueryBuilder('todo')
@@ -21,22 +26,39 @@ class TodoRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function findAllUserTodo(User $user)
     {
-        return $this->createQueryBuilder('todo')
-            ->andWhere('todo.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('todo')
+                ->andWhere('todo.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+
+        }
     }
 
+    /**
+     * @param User $user
+     * @param $todoID
+     * @return mixed
+     */
     public function findByUserAndTodo(User $user, $todoID)
     {
-        return $this->createQueryBuilder('todo')
-            ->andWhere('todo.user = :user', 'todo.id = :id')
-            ->setParameter('user', $user)
-            ->setParameter('id', $todoID)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('todo')
+                ->andWhere('todo.user = :user', 'todo.id = :id')
+                ->setParameter('user', $user)
+                ->setParameter('id', $todoID)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+
+        }
     }
 }

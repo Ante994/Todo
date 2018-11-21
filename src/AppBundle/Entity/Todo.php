@@ -141,7 +141,7 @@ class Todo
      *
      * @return Todo
      */
-    public function addTask(\AppBundle\Entity\Task $task)
+    public function addTask(Task $task)
     {
         $this->tasks[] = $task;
 
@@ -153,7 +153,7 @@ class Todo
      *
      * @param \AppBundle\Entity\Task $task
      */
-    public function removeTask(\AppBundle\Entity\Task $task)
+    public function removeTask(Task $task)
     {
         $this->tasks->removeElement($task);
     }

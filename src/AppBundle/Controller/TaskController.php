@@ -17,11 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 class TaskController extends Controller
 {
     /**
+     * New task
      * @param Request $request
      * @param $todoId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function newAction(Request $request, $todoId)
+    public function newAction(Request $request, $todoId):Response
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
         if (!$this->getUser() instanceof User || !$usersTodo) {
@@ -50,12 +51,13 @@ class TaskController extends Controller
     }
 
     /**
+     * Delete task
      * @param Request $request
      * @param $taskId
      * @param $todoId
      * @return Response
      */
-    public function deleteAction(Request $request, $taskId, $todoId)
+    public function deleteAction(Request $request, $taskId, $todoId):Response
     {
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('AppBundle:Task')->find($taskId);
@@ -81,10 +83,11 @@ class TaskController extends Controller
     }
 
     /**
+     * Show task details
      * @param $taskId
      * @return Response
      */
-    public function showAction($taskId)
+    public function showAction($taskId):Response
     {
         $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);
         if (!$this->getUser() instanceof User || !$task) {
@@ -108,12 +111,13 @@ class TaskController extends Controller
     }
 
     /**
+     * Edit action for task
      * @param Request $request
      * @param $taskId
      * @param $todoId
      * @return Response
      */
-    public function editAction(Request $request, $taskId, $todoId)
+    public function editAction(Request $request, $taskId, $todoId):Response
     {
         $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($taskId);
         if (!$this->getUser() instanceof User || !$task) {

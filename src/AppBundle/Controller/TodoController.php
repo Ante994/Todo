@@ -6,6 +6,7 @@ use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\TodoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,16 +20,16 @@ class TodoController extends Controller
      * Homepage
      * @return Response
      */
-    public function homepageAction()
+    public function homepageAction():Response
     {
         return $this->render('AppBundle:todo:homepage.html.twig');
     }
 
     /**
-     * Show all todos of user
+     * Show user todos
      * @return Response
      */
-    public function indexAction()
+    public function indexAction():Response
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findAllTodoByUser($this->getUser());
 
@@ -52,7 +53,10 @@ class TodoController extends Controller
         );
     }
 
+    # razdvojiti u servise, max 20 linija po akciji, param coverter, tested code
+
     /**
+     * Creates new todo
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -100,10 +104,11 @@ class TodoController extends Controller
     }
 
     /**
+     * Delete todo
      * @param $todoId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction($todoId)
+    public function deleteAction($todoId):RedirectResponse
     {
         $user = $this->getUser();
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($user, $todoId);
@@ -121,10 +126,11 @@ class TodoController extends Controller
     }
 
     /**
+     * Show details of todo
      * @param $todoId
      * @return Response
      */
-    public function showAction($todoId)
+    public function showAction($todoId):Response
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
 
@@ -133,7 +139,6 @@ class TodoController extends Controller
         }
         $todoService = $this->get('app.service.todo_statistic');
         $statistic = $todoService->getStatistic($this->getUser(), $todoId);
-
         $todoTasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findByTodo($usersTodo);
 
         /**
@@ -155,11 +160,12 @@ class TodoController extends Controller
     }
 
     /**
+     * Edit todo
      * @param Request $request
      * @param $todoId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function editAction(Request $request, $todoId)
+    public function editAction(Request $request, $todoId):Response
     {
         $usersTodo = $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserAndTodo($this->getUser(), $todoId);
         if (!$this->getUser() instanceof User || !$usersTodo) {
